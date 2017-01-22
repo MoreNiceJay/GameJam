@@ -4,34 +4,43 @@ using UnityEngine;
 
 public class Spawn : MonoBehaviour {
 
-	public GameObject[] enemies;
-	public int amountOfEnemy;
-	private Vector3 spawnPoint;
-	public float timeBetweenEnemies;
+	public float timeBetweenWaves;
+	public int waveSize;
+	public int spawnRange;
 
+	public GameObject[] enemies;
+	public int amount;
+
+	private Vector3 spawnPoint;
+
+	void Start() {
+	
+		waveSize = 20;
+		spawnRange = 20;
+		timeBetweenWaves = 5f;
+	}
 
 	// Update is called once per frame
 	void Update () {
 	
 		enemies = GameObject.FindGameObjectsWithTag ("Enemy");
-		int amount = enemies.Length;
+		amount = enemies.Length;
 
-		if (amount < amountOfEnemy) 
-		{
-			InvokeRepeating ("spawnEnemy", timeBetweenEnemies, timeBetweenEnemies);
+		if (amount < waveSize) {
+			InvokeRepeating ("spawnEnemy", 0.01f, 0.01f);
 		}
-
-
 	}
+
 
 
 void spawnEnemy ()
 {
-	spawnPoint.x = Random.Range (-20, 20);
-	spawnPoint.y = 0.5f;
-	spawnPoint.z = Random.Range (-20, 20);
+		
+		spawnPoint.x = Random.Range (-spawnRange, spawnRange);
+		spawnPoint.y = 0.5f;
+		spawnPoint.z = Random.Range (-spawnRange, spawnRange);
 
-		Instantiate(enemies[UnityEngine.Random.Range(0, enemies.Length -1)],spawnPoint, Quaternion.identity);
-
+		Instantiate(enemies[ enemies.Length - 1],spawnPoint, Quaternion.identity);
+		CancelInvoke ();
 	}
 }
